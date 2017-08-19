@@ -31,3 +31,27 @@ If the user guesses the same letter twice, do not take away a guess. Instead, di
 The game should end when the user constructs the full word or runs out of guesses. If the player runs out of guesses, reveal the word to the user when the game ends.
 
 When a game ends, ask the user if they want to play again. The game begins again if they reply positively.
+
+**Mockups**
+
+You do not have to use these mockups. They are only a suggested way to lay out your application. Using them can let you focus on the programming parts of this assignments without worrying about layout, however.
+
+The game at the start:
+
+![First](/public/images/mockup/02abe9b4-start.png)
+
+Mid-game:
+
+![Second](/public/images/mockup/a307cd99-midgame.png)
+
+At the end of the game:
+
+![Third](/public/images/mockup/0026d5d2-endgame.png)
+
+**Hard Mode**
+
+* Let the user choose a level of difficulty at the beginning of the program. Easy mode only has words of 4-6 characters; normal mode only has words of 6-8 characters; hard mode only has words of 8+ characters.
+
+* If a user wins, ask for their name and create a page that shows all the winners so far.
+
+* If a user wins, ask for their name and optionally an image to upload. Show their image on the winners page.
