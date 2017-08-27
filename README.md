@@ -1,6 +1,7 @@
 assignment from: https://newline.theironyard.com/cohorts/15/courses/10/projects/78
 
-some of the instructions are:
+**Build a game with Node and Express**
+Use Node, Express, and sessions to build Mystery Word
 
 You will implement the game Mystery Word as a web application. In your game, you will be playing against the computer.
 
@@ -12,7 +13,7 @@ Store the word the user is trying to guess in a session.
 
 On the page, show the number of letters in the word like so:
 
-_ _ _ _ _ _ _
+"_ _ _ _ _ _ _ "
 
 Ask the user to supply one guess (i.e. letter) at a time, using a form. This form should be validated to make sure only 1 letter is sent. This letter can be upper or lower case and it should not matter. If a user enters more than one letter, tell them the input is invalid and let them try again.
 

@@ -1,0 +1,30 @@
+// when done rename to 'home.handlebars'
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <h1>welcoem to mystery word</h1>
+  <p>you have {{}} left</p>
+  {{word}}
+  {{guesses}}
+  {{turns}}
+  
+  <!--text
+    blank underscore
+    enter field
+    button -->
+    <p>letters guessed</p>
+    <ul>
+      {{#beans}}
+      <li>{{.}}</li>
+      {{/beans}}
+    </ul>
+</body>
+
+</html>

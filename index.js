@@ -7,13 +7,12 @@ const express = require('express');
 
 //Handlebars is a logic-less templating engine that dynamically generates your HTML page. It’s an extension of Mustache with a few additional features. Mustache is fully logic-less but Handlebars adds minimal logic thanks to the use of some helpers (such as if, with, unless, each and more) that we’ll discuss further in this article. As a matter of fact, we can say that Handlebars is a superset of Mustache.
 // https://www.npmjs.com/package/express-handlebars
-// $ npm install handlebars
+// $ npm install express-handlebars
 const exphbs = require('express-handlebars');
 
-// Used the npm package express-session to set up user authentication.
-// Used to store the word the user is trying to guess in a session.
-// $ npm install express-session
-const session = require('express-session');
+// Reads the contents of a file into memory.
+// https://www.npmjs.com/package/fs-extra
+const fs = require('fs');
 
 // Node.js body parsing middleware.
 // Returns middleware that only parses json.
@@ -21,51 +20,130 @@ const session = require('express-session');
 // $ npm install body-parser
 const bodyParser = require('body-parser');
 
-// Reads the contents of a file into memory.
-// https://www.npmjs.com/package/fs-extra
-// might need to fix this and/or add notes above it
-const fs = require('fs');
+// Used the npm package express-session to set up user authentication.
+// Used to store the word the user is trying to guess in a session.
+// $ npm install express-session
+const session = require('express-session');
+
+// Express middleware for Validator, a library of string validators and sanitizers.
+// https://www.npmjs.com/package/express-validator
+// $ npm install express-validator
+const expressValidator = require('express-validator');
+
+
+// What does this do?
+// const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split('\n');
+
 
 // different/additional comments from above?
 const app = express();
 
+
 // call the engine boilerplate
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main'
+}));
+
+// What does this do?
+app.set('views', './views')
+app.set('view engine', 'handlebars');
 
 
 // call static
-// https://expressjs.com/en/starter/static-files.html
+// see: https://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
 
 // call session
-// see https://www.npmjs.com/package/express-session
-// need to fix this
+// see: https://www.npmjs.com/package/express-session
 app.use(session({
-//   secret: 'keyboard cat',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { secure: true }
-}))
-
-
-// ================
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
-// ================
+  secret: 'my password',
+  resave: false,
+  saveUninitialized: false,
+}));
 
 
 // call bodyparser
-// might need to fix this
-app.use(bodyParser.urlencode({ extend: true }));
+// see: https://www.npmjs.com/package/body-parser
+app.use(bodyParser.json());
+
+// what happenes if I comment the following line of code out?
+// app.use(bodyParser.urlencode({
+//   extend: false
+// }));
 
 
 // call validator
-// must come after bodyparser
+// NOTE: must come after bodyparser
+app.use(expressValidator());
+
+// study this. What happened? What's going on here?
+app.use((req, res, next) => {
+      if (!req.session.mysteryWord) {
+        req.session.mysteryWord = words[Math.floor(Math.random() * words.length)];
+        req.session.word = (req.session.mysteryWord.toLowerCase());
+        req.session.wordLength = req.session.mysteryWord.length;
+        req.session.turns = 8;
+        req.session.blanks = [];
+        for (var i = 0; i < req.session.length; i++) {
+          req.session.blanks.push('_ ');
+        }
+        req.session.notInWord = [];
+      };
+
+      console.log('word array: ', req.session.word);
+      console.log('blanks array: ', req.session.blanks);
+      next();
+
+      app.get('/', (req, res) => {
+        res.render('index', {
+          word: req.session.blanks,
+          guesses: req.session.notInWord,
+          turns: req.session.turns
+        });
+      });
+
+      app.get('/guesses', function(req, res) {
+        res.render('noTurns')
+      });
+
+      app.get('/winner', function(req, res) {
+        res.render('win')
+      });
+
+      app.post('/guesses', (req, res) => {
+          let guessedLetter = req.body.guess;
+          console.log('guessedLetter: ', guessedLetter);
+          for (var i = 0; i < req.session.word.length; i++) {
+            if (guessedLetter === req.session.word[i]) {
+              console.log('indexed letter: ', req.session.word.charAt(i));
+              req.session.blanks.splice(i, 1, guessedLetter).join(" ");
+            };
+          };
+        });
+
+        if (!req.session.word.includes(guessedLetter)) {
+          req.session.notInWord.push(guessedLetter)
+          // what is '--'? Find out.
+          req.session.turns--
+            console.log("There are no " + guessedLetter + "'s... Guess again.")
+          console.log(req.session.notInWord);
+        };
+
+        if (req.session.turns === 0) {
+          req.redirect('/guesses');
+        };
+
+        if (req.session.blanks.join("") === req.session.word) {
+          res.redirect('/winner');
+          console.log(req.session.blanks.join(""));
+
+        }; res.redirect('/');
+      });
 
 
-// app.listen
-app.listen(3000, function () {
-  console.log('Successfully started express application!');
-  console.log('Listening on port 3000');
-});
+    // app.listen
+    app.listen(3000, function() {
+      console.log('Successfully started express application!');
+      console.log('Listening on port 3000');
+    });
