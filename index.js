@@ -32,7 +32,9 @@ const expressValidator = require('express-validator');
 
 
 // What does this do?
-// const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split('\n');
+// See the instruction on the assignemnt. It says:
+// "This file exists on your computer already. You will have to read it with Node. The following line will read it and split it into words:"
+const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split('\n');
 
 
 // different/additional comments from above?
@@ -41,7 +43,9 @@ const app = express();
 
 // call the engine boilerplate
 app.engine('handlebars', exphbs({
-  defaultLayout: 'main'
+
+  // The following is not needed. Read up on what is the significance of it?
+  // defaultLayout: 'main'
 }));
 
 // What does this do?
@@ -85,15 +89,16 @@ app.use((req, res, next) => {
         req.session.wordLength = req.session.mysteryWord.length;
         req.session.turns = 8;
         req.session.blanks = [];
-        for (var i = 0; i < req.session.length; i++) {
-          req.session.blanks.push('_ ');
-        }
+        for (let i = 0; i < req.session.length; i++) {
+          req.session.blanks.push("_ ");
+                  }
         req.session.notInWord = [];
       };
-
+console.log(req.session.word);
       console.log('word array: ', req.session.word);
       console.log('blanks array: ', req.session.blanks);
       next();
+      });
 
       app.get('/', (req, res) => {
         res.render('index', {
@@ -101,7 +106,7 @@ app.use((req, res, next) => {
           guesses: req.session.notInWord,
           turns: req.session.turns
         });
-      });
+});
 
       app.get('/guesses', function(req, res) {
         res.render('noTurns')
@@ -114,19 +119,19 @@ app.use((req, res, next) => {
       app.post('/guesses', (req, res) => {
           let guessedLetter = req.body.guess;
           console.log('guessedLetter: ', guessedLetter);
-          for (var i = 0; i < req.session.word.length; i++) {
+          for (let i = 0; i < req.session.word.length; i++) {
             if (guessedLetter === req.session.word[i]) {
               console.log('indexed letter: ', req.session.word.charAt(i));
               req.session.blanks.splice(i, 1, guessedLetter).join(" ");
             };
           };
-        });
+
 
         if (!req.session.word.includes(guessedLetter)) {
           req.session.notInWord.push(guessedLetter)
           // what is '--'? Find out.
           req.session.turns--
-            console.log("There are no " + guessedLetter + "'s... Guess again.")
+          console.log("There are no " + guessedLetter + "'s... Guess again.")
           console.log(req.session.notInWord);
         };
 

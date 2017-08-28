@@ -1,4 +1,4 @@
-// when done rename to 'home.handlebars'
+<!-- when done rename to 'home.handlebars' -->
 
 <!DOCTYPE html>
 <html>
@@ -9,22 +9,30 @@
 </head>
 
 <body>
-  <h1>welcoem to mystery word</h1>
-  <p>you have {{}} left</p>
-  {{word}}
-  {{guesses}}
-  {{turns}}
-  
-  <!--text
-    blank underscore
-    enter field
-    button -->
-    <p>letters guessed</p>
-    <ul>
-      {{#beans}}
-      <li>{{.}}</li>
-      {{/beans}}
-    </ul>
+<h1>You have {{{turns}}} turns left.</h1>
+
+
+<!-- Documentation on how to us #: http://handlebarsjs.com/#builtins -->
+<div id='wordSpace'>
+
+<!-- the documentation says to use three braces rather than two like I have used below. How come? -->
+{{#word}}
+{{.}}
+{{/word}}
+</div>
+
+<form action='/guesses' method='post'>
+     <input type='text' name='guess' placeholder='Your guess goes here'>
+     <button>Submit Guess</button>
+   </form>
+ {{{alert}}}
+
+<ul>
+{{#guesses}}
+<li>{{.}}</li>
+{{/guesses}}
+</ul>
+
 </body>
 
 </html>
