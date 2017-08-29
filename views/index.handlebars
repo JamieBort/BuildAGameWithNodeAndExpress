@@ -9,29 +9,35 @@
 </head>
 
 <body>
-<h1>You have {{{turns}}} turns left.</h1>
+  <h1>You have {{turns}} turns left.</h1>
 
 
-<!-- Documentation on how to us #: http://handlebarsjs.com/#builtins -->
-<div id='wordSpace'>
+  <!-- Documentation on how to us #: http://handlebarsjs.com/#builtins -->
+  <div id='wordSpace'>
 
-<!-- the documentation says to use three braces rather than two like I have used below. How come? -->
-{{#word}}
-{{.}}
-{{/word}}
-</div>
+    <!-- the documentation says to use three braces rather than two like I have used below. How come? -->
+    {{#word}}
+      {{.}}
+    {{/word}}
 
-<form action='/guesses' method='post'>
-     <input type='text' name='guess' placeholder='Your guess goes here'>
-     <button>Submit Guess</button>
-   </form>
- {{{alert}}}
+  </div>
 
-<ul>
-{{#guesses}}
-<li>{{.}}</li>
-{{/guesses}}
-</ul>
+  <form action='/guesses' method='post'>
+    <input type='text' name='guess' placeholder='Your guess goes here'>
+    <button>Submit Guess</button>
+  </form>
+  <div class="">
+    {{alert}}
+  </div>
+
+
+  <p>letters guessed</p>
+
+  <ul>
+    {{#guesses}}
+      <li>{{.}}</li>
+    {{/guesses}}
+  </ul>
 
 </body>
 

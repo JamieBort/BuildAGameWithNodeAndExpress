@@ -90,7 +90,7 @@ app.use((req, res, next) => {
         req.session.turns = 8;
         req.session.blanks = [];
         for (let i = 0; i < req.session.length; i++) {
-          req.session.blanks.push("_ ");
+          req.session.blanks.push('_ ');
                   }
         req.session.notInWord = [];
       };
@@ -131,8 +131,8 @@ console.log(req.session.word);
           req.session.notInWord.push(guessedLetter)
           // what is '--'? Find out.
           req.session.turns--
-          console.log("There are no " + guessedLetter + "'s... Guess again.")
-          console.log(req.session.notInWord);
+      console.log("There are no " + guessedLetter + "'s... Guess again!")
+    console.log(req.session.notInWord);
         };
 
         if (req.session.turns === 0) {
@@ -149,6 +149,6 @@ console.log(req.session.word);
 
     // app.listen
     app.listen(3000, function() {
-      console.log('Successfully started express application!');
-      console.log('Listening on port 3000');
+      console.log('\nSuccessfully started express application!');
+      console.log('*** Listening on port 3000 ***');
     });
