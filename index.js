@@ -63,7 +63,7 @@ app.use(express.static('public'));
 app.use(session({
   secret: 'my password',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
 }));
 
 
@@ -71,10 +71,10 @@ app.use(session({
 // see: https://www.npmjs.com/package/body-parser
 app.use(bodyParser.json());
 
-// what happenes if I comment the following line of code out?
-// app.use(bodyParser.urlencode({
-//   extend: false
-// }));
+// This displays the letter that was alredy chosen.
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 
 // call validator
@@ -89,12 +89,14 @@ app.use((req, res, next) => {
         req.session.wordLength = req.session.mysteryWord.length;
         req.session.turns = 8;
         req.session.blanks = [];
-        for (let i = 0; i < req.session.length; i++) {
+
+        // what did changing this do?
+        for (let i = 0; i < req.session.wordLength; i++) {
           req.session.blanks.push('_ ');
                   }
         req.session.notInWord = [];
       };
-console.log(req.session.word);
+
       console.log('word array: ', req.session.word);
       console.log('blanks array: ', req.session.blanks);
       next();
@@ -131,12 +133,12 @@ console.log(req.session.word);
           req.session.notInWord.push(guessedLetter)
           // what is '--'? Find out.
           req.session.turns--
-      console.log("There are no " + guessedLetter + "'s... Guess again!")
-    console.log(req.session.notInWord);
+            console.log("There are no " + guessedLetter + "'s... Guess again!")
+          console.log(req.session.notInWord);
         };
 
         if (req.session.turns === 0) {
-          req.redirect('/guesses');
+          res.redirect('/guesses');
         };
 
         if (req.session.blanks.join("") === req.session.word) {

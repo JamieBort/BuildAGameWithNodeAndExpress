@@ -56,3 +56,12 @@ At the end of the game:
 * If a user wins, ask for their name and create a page that shows all the winners so far.
 
 * If a user wins, ask for their name and optionally an image to upload. Show their image on the winners page.
+
+=====================
+Revisit this assignment after the class is over. Make the following changes:
+
+1. Check to see if the guessed letter is in fact a letter. If not post the statment: "your guess was not a letter. Please guess a letter." And do not deduct from the 8 incorrect guesses.
+
+2. Add styling.
+
+3. 
