@@ -12,6 +12,7 @@ const exphbs = require('express-handlebars');
 
 // Reads the contents of a file into memory.
 // https://www.npmjs.com/package/fs-extra
+// npm install file-system
 const fs = require('fs');
 
 // Node.js body parsing middleware.
